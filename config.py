@@ -6,7 +6,7 @@ from utils.autoaugment import ImageNetPolicy
 import random
 from PIL import Image
 # pretrained model checkpoints
-pretrained_model = {'resnet50': r'D:\Code\github_project\DCL-master\pretrain\resnet50.pdparams'}
+pretrained_model = {'resnet50': r'DCL-master/pretrain/resnet50.pdparams'}
 
 
 # transforms dict
@@ -70,8 +70,8 @@ class LoadConfig(object):
             self.numcls = 2019
         elif args.dataset == 'CUB':
             self.dataset = args.dataset
-            self.rawdata_root = r'D:\Code\github_project\DCL-master\datasets\CUB\data/'
-            self.anno_root = r'D:\Code\github_project\DCL-master\datasets\CUB\anno/'
+            self.rawdata_root = r'data/CUB_200_2011/data/'
+            self.anno_root = r'data/CUB_200_2011/anno/'
             self.numcls = 200
         elif args.dataset == 'STCAR':
             self.dataset = args.dataset

@@ -10,7 +10,7 @@ from models.LoadModel import MainModel
 from config import LoadConfig, load_data_transformers
 from utils.dataset_DCL import collate_fn4train, collate_fn4val, collate_fn4test, collate_fn4backbone, dataset
 
-
+paddle.device.set_device("gpu:0")
 # parameters setting
 def parse_args():
     parser = argparse.ArgumentParser(description='dcl parameters')
@@ -24,11 +24,11 @@ def parse_args():
     parser.add_argument('--auto_resume', dest='auto_resume',
                         action='store_true')
     parser.add_argument('--epoch', dest='epoch',
-                        default=1, type=int)
+                        default=300, type=int)
     parser.add_argument('--tb', dest='train_batch',
-                        default=16, type=int)
+                        default=32, type=int)
     parser.add_argument('--vb', dest='val_batch',
-                        default=512, type=int)
+                        default=32, type=int)
     parser.add_argument('--sp', dest='save_point',
                         default=5000, type=int)
     parser.add_argument('--cp', dest='check_point',

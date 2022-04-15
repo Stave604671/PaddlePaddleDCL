@@ -24,6 +24,7 @@ class LossRecord(object):
             self.count += 1
 
     def get_val(self, init=False):
+        # print("get_val", self.rec_loss, self.count)
         pop_loss = self.rec_loss / self.count
         if init:
             self.rec_loss = 0

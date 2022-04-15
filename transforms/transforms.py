@@ -1,5 +1,4 @@
 from __future__ import division
-import torch
 import math
 import random
 from PIL import Image, ImageOps, ImageEnhance
@@ -73,7 +72,7 @@ class ToTensor(object):
         Returns:
             Tensor: Converted image.
         """
-        return F.to_tensor(pic)
+        return paddle.vision.transforms.to_tensor(pic)
 
     def __repr__(self):
         return self.__class__.__name__ + '()'

@@ -9,7 +9,7 @@ import pandas
 import random
 import PIL.Image as Image
 from PIL import ImageStat
-from torch.utils import data
+# from torch.utils import data
 
 
 def random_sample(img_names, labels):
@@ -62,6 +62,7 @@ class dataset(paddle.io.Dataset):
     def __getitem__(self, item):
 
         img_path = os.path.join(self.root_path, self.paths[item])
+        
         img = self.cv2_loader(img_path)
         if self.test:
             img = self.totensor(img)

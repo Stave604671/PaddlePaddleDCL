@@ -3,7 +3,8 @@ import math
 import random
 
 import numpy
-from PIL import Image, ImageOps, ImageEnhance, PILLOW_VERSION
+import PIL
+from PIL import Image, ImageOps, ImageEnhance# , PILLOW_VERSION
 try:
     import accimage
 except ImportError:
@@ -48,7 +49,7 @@ def to_tensor(pic):
         data = numpy.array(pic)
         return paddle.to_tensor(data)
     elif isinstance(pic, numpy.ndarray):
-
+        print("pic", pic.shape, "type", type(pic))
         return paddle.vision.transforms.to_tensor(pic)
 
 
@@ -206,11 +207,11 @@ def crop(img, i, j, h, w):
 def center_crop(img, output_size):
     if isinstance(output_size, numbers.Number):
         output_size = (int(output_size), int(output_size))
-    w, h = img.size
+    w, h, c = img.shape
     th, tw = output_size
     i = int(round((h - th) / 2.))
     j = int(round((w - tw) / 2.))
-    return crop(img, i, j, th, tw)
+    return paddle.vision.transforms.crop(img, i, j, th, tw)
 
 
 def resized_crop(img, i, j, h, w, size, interpolation=Image.BILINEAR):
@@ -633,7 +634,7 @@ def affine(img, angle, translate, scale, shear, resample=0, fillcolor=None):
     output_size = img.size
     center = (img.size[0] * 0.5 + 0.5, img.size[1] * 0.5 + 0.5)
     matrix = _get_inverse_affine_matrix(center, angle, translate, scale, shear)
-    kwargs = {"fillcolor": fillcolor} if PILLOW_VERSION[0] == '5' else {}
+    kwargs = {"fillcolor": fillcolor} if PIL.__version__[0] == '5' else {}
     return img.transform(output_size, Image.AFFINE, matrix, resample, **kwargs)
 
 

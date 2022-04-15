@@ -91,6 +91,7 @@ def train(Config,
             if Config.use_focal_loss:
                 ce_loss = get_focal_loss(outputs[0], labels)
             else:
+                # print(output[0])
                 ce_loss = get_ce_loss(outputs[0], labels)
 
             if Config.use_Asoftmax:
@@ -113,16 +114,16 @@ def train(Config,
                 loss += law_loss
 
             loss.backward()
-            # paddle.device.cuda.synchronize()
+            paddle.device.cuda.synchronize()
 
             optimizer.step()
-            # paddle.device.cuda.synchronize()
+            paddle.device.cuda.synchronize()
 
             if Config.use_dcl:
                 print(
                     'step: {:-8d} / {:d} loss=ce_loss+swap_loss+law_loss: {:6.4f} = {:6.4f} + {:6.4f} + {:6.4f} '.format(
-                        step, train_epoch_step, loss.detach().item(), ce_loss.detach().item(),
-                        swap_loss.detach().item(), law_loss.detach().item()), flush=True)
+                        step, train_epoch_step, loss.numpy()[0], ce_loss.numpy()[0],
+                        swap_loss.numpy()[0], law_loss.numpy()[0]), flush=True)
             if Config.use_backbone:
                 print('step: {:-8d} / {:d} loss=ce_loss+swap_loss+law_loss: {:6.4f} = {:6.4f} '.format(step,
                                                                                                        train_epoch_step,
@@ -154,10 +155,10 @@ def train(Config,
 
                 save_path = os.path.join(save_dir,
                                          'weights_%d_%d_%.4f_%.4f.pth' % (epoch, batch_cnt, val_acc1, val_acc3))
-                # paddle.device.cuda.synchronize()
+                paddle.device.cuda.synchronize()
                 paddle.save(model.state_dict(), save_path)
                 print('saved model to %s' % save_path, flush=True)
-                # paddle.device.cuda.empty_cache()
+                paddle.device.cuda.empty_cache()
 
             # save only
             elif step % savepoint == 0:
@@ -170,5 +171,5 @@ def train(Config,
                     os.remove(checkpoint_list[0])
                     del checkpoint_list[0]
                 paddle.save(model.state_dict(), save_path)
-                # paddle.device.cuda.empty_cache()
+                paddle.device.cuda.empty_cache()
     log_file.close()

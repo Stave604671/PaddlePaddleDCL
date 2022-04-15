@@ -24,7 +24,7 @@ class MainModel(nn.Layer):
         if self.backbone_arch in dir(models):
             self.model = getattr(models, self.backbone_arch)()
             if self.backbone_arch in pretrained_model:
-                self.model.set_state_dict(paddle.load(r"D:\Code\github_project\DCL-master\pretrain\resnet50.pdparams"))
+                self.model.set_state_dict(paddle.load(r"DCL-master/pretrain/resnet50.pdparams"))
 
         if self.backbone_arch == 'resnet50' or self.backbone_arch == 'se_resnet50':
             self.model = nn.Sequential(*list(self.model.children())[:-2])
